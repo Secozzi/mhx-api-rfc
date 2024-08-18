@@ -9,11 +9,10 @@
   - [HttpSource](#httpsource)   
 	- [MangaPagingSource](#mangapagingsource)
 	- Models
-		- Naming
-		- Listing
-		- Manga
-		- Chapter
-		- Page/Image
+		- [Listing](#listing)
+		- [Manga](#manga)
+		- [Chapter](#chapter)
+		- [Page](#page)
 # Pagination
 ```kt
 class PaginatedData<T, K>(
@@ -123,4 +122,92 @@ private class MangaPagingSourceImpl<K>(
 
     override fun getRefreshKey(state: PagingState<Key, Manga>): Key? = null
 }
+```
+## Listing
+```kt
+class Listing(val id: String, val name: String) {
+
+    override fun equals(other: Any?) = other is Listing && id == other.id
+
+    override fun hashCode() = id.hashCode()
+
+    override fun toString() = "Listing(id=$id, name=$name)"
+
+    companion object Preset {
+        // Consumers should localize the presets separately
+        val Default = Listing("default", "Default")
+        val Popular = Listing("popular", "Popular")
+        val Latest = Listing("latest", "Latest")
+        val Ranking = Listing("ranking", "Ranking")
+    }
+}
+```
+## Manga
+```kt
+class Manga(
+    val key: String,
+    val title: String,
+    val artists: List<String> = emptyList(),
+    val authors: List<String> = emptyList(),
+    val description: String = "",
+    val genres: List<String> = emptyList(),
+    val status: MangaStatus = MangaStatus.Unknown,
+    val cover: String? = null,
+    val updateStrategy: UpdateStrategy = UpdateStrategy.AlwaysUpdate,
+    val initialized: Boolean = false,
+    val chapters: List<Chapter>? = null,
+    val internalData: String = "",
+)
+
+enum class MangaStatus {
+    Unknown,
+    Ongoing,
+    Completed,
+    Licensed,
+    PublishingFinished,
+    Cancelled,
+    OnHiatus,
+}
+
+enum class UpdateStrategy {
+    AlwaysUpdate,
+    OnlyFetchOnce,
+}
+```
+## Chapter 
+```kt
+class Chapter(
+    val key: String,
+    val name: String,
+    val dateUpload: Long = 0,
+    val chapterNumber: Float = -1f,
+    val scanlators: List<String> = emptyList(),
+    val lockedStatus: ChapterLockState = ChapterLockState.NONE,
+    val internalData: String = "",
+)
+
+enum class ChapterLockState(val isLocked: Boolean, val disablePageFetch: Boolean) {
+    NONE(isLocked = false, disablePageFetch = false),
+    LOCKED(isLocked = true, disablePageFetch = true),
+    UNLOCKED(isLocked = false, disablePageFetch = false),
+}
+```
+## Page
+```kt
+class Page(
+    content: PageContent,
+    thumbnail: String? = null,
+)
+
+sealed interface PageContent
+
+class PageUrl(val url: String, val internalData: String = "") : PageContent
+
+sealed interface PageComplete : PageContent
+
+class PageImageUrl(val urls: List<String>) : PageComplete {
+    constructor(url: String) : this(listOf(url))
+}
+
+class PageText(val text: String) : PageComplete
 ```
