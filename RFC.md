@@ -48,8 +48,8 @@ abstract class Source(context: ExtensionContext): EISource, ExtensionContext by 
     abstract val language: String
 
     abstract suspend fun getListings(): List<Listing>
+
     abstract suspend fun getFilterList(listing: Listing): FilterList
-    abstract suspend fun getSearchFilterList(): FilterList
 
     abstract suspend fun getMangaList(
         listing: Listing,
@@ -57,6 +57,8 @@ abstract class Source(context: ExtensionContext): EISource, ExtensionContext by 
         filterState: Map<String, String>,
         filterList: FilterList,
     ): MangaPagingSource
+
+    abstract suspend fun getSearchFilterList(): FilterList
 
     abstract suspend fun getSearchMangaList(
         query: String,
@@ -79,11 +81,12 @@ abstract class HttpSource(context: ExtensionContext): Source(context) {
     val needPcUserAgent: Boolean get() = true
 
     abstract suspend fun getMangaUrl(manga: Manga): String
+
     abstract suspend fun getChapterUrl(chapter: Chapter): String
 
-    abstract suspend fun getImageRequest(url: String): HttpRequest
-
     abstract suspend fun getCoverRequest(manga: Manga): HttpRequest
+
+    abstract suspend fun getImageRequest(url: String): HttpRequest
 }
 ```
 ## MangaPagingSource
