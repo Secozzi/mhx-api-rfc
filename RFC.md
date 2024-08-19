@@ -71,7 +71,7 @@ abstract class Source(context: ExtensionContext): EISource, ExtensionContext by 
 
     abstract suspend fun getPageList(chapter: Chapter): List<Page>
 
-    suspend fun getPage(page: PageUrl): PageComplete = throw UnsupportedOperationException("Not used")
+    suspend fun getPage(page: PageUrl): PageComplete = throw UnsupportedOperationException()
 }
 ```
 ## HttpSource
