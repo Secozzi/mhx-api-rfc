@@ -14,6 +14,7 @@
 		- [Chapter](#chapter)
 		- [Page](#page)
 # Pagination
+A simple class to hold arbitrary pagination data
 ```kt
 class PaginatedData<T, K>(
     val data: List<T>,
@@ -32,9 +33,14 @@ interface Extension {
     fun getItems(context: ExtensionContext): List<ExtensionItem>  
 }
 ```
-The entry point. Developers are required to make a class (or object?) with no parameters that inherits `Extension`.  Consumer will use the implemented class to create an `Extension` instance.
+The entry point. Developers are required to make a class (or object?) with no parameters that inherits `Extension`.  Consumer will use the implemented class (again or object?) to create an `Extension` instance.
 ## ExtensionContext
 `ExtensionContext` is used to pass data to the extension. Like passing the HTTP client and what not.
+```kt
+interface ExtensionContext {
+    val httpClient: HttpClient
+}
+```
 ## ExtensionItem
 Sealed class of items that the extension can provides.
 # Source
