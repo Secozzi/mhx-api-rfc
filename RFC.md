@@ -190,9 +190,10 @@ enum class UpdateStrategy {
 ```kt
 class Chapter(
     val key: String,
-    val name: String,
+    val number: Float = -1f,
+    val volume: FLoat = -1f,
+    val name: String? = null,
     val dateUpload: Long = 0,
-    val chapterNumber: Float = -1f,
     val scanlators: List<String> = emptyList(),
     val lockedStatus: ChapterLockState = ChapterLockState.NONE,
     val internalData: String = "",
