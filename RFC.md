@@ -75,8 +75,6 @@ abstract class Source(context: ExtensionContext): EISource, ExtensionContext by 
 
     abstract suspend fun getMangaUpdate(manga: Manga, needDetails: Boolean, needChapters: Boolean): Manga
     
-    abstract suspend fun getAlternativeCovers(manga: Manga): List<String>
-
     abstract suspend fun getPageList(chapter: Chapter): List<Page>
 
     suspend fun getPage(page: PageUrl): PageComplete = throw UnsupportedOperationException()
@@ -165,7 +163,7 @@ class Manga(
     val genres: List<String> = emptyList(),
     val status: MangaStatus = MangaStatus.Unknown,
     val cover: String? = null,
-    val hasAltCovers: Boolean = false,
+    val altCovers: List<String> = emptyList(),
     val rating: Float = -1f, 
     val updateStrategy: UpdateStrategy = UpdateStrategy.AlwaysUpdate,
     val initialized: Boolean = false,
